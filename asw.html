@@ -1,0 +1,104 @@
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+	<title></title>
+</head>
+<body>
+
+<script type="text/javascript">
+	
+    class AlphaPeeler {
+        constructor(P, Q, theta) {
+            this.P = P;
+            this.Q = Q;
+            this.theta = theta;
+        }
+        
+        async calculateR() {
+            const insideSqrt = await this.calculateAn1() + await this.calculateAn2() + (await this.calculateAn3() * await this.calculateAn4());
+            const R = Math.sqrt(insideSqrt);
+            return R;
+        }
+        
+        async calculateAn1() {
+            return await A1(this.P);
+        }
+        
+        async calculateAn2() {
+            return await A2(this.Q);
+        }
+        
+        async calculateAn3() {
+            return await A3(this.P, this.Q);
+        }
+        
+        async calculateAn4() {
+            return await A4(this.theta);
+        }
+        
+        async calculateAn5() {
+            return await A5(this.Q, this.theta);
+        }
+        
+        async calculateAn6() {
+            return await A6(this.P, this.Q, this.theta);
+        }
+        
+        async calculateAlpha() {
+            return Math.atan(await this.calculateAn5() / await this.calculateAn6());
+        }
+        
+        async run() {
+            const R = await this.calculateR();
+            const alpha = await this.calculateAlpha();
+
+            $(document).ready(function() {
+                $("#001").html(`P = ${this.P} <BR> Q = ${this.Q} <BR>`);
+                $("#002").html(`R = ${R}`);
+                $("#003").html(`The value of alpha is: ${alpha}`);
+            }.bind(this));
+        }
+    }
+
+    async function A1(P)
+     {
+        return P ** 2;
+    }
+
+    async function A2(Q) 
+    {
+        return Q ** 2;
+    }
+
+    async function A3(P, Q)
+     {
+        return 2 * P * Q;
+    }
+
+    async function A4(theta)
+    {
+        return Math.cos(theta);
+    }
+
+    async function A5(Q, theta) 
+    {
+        return Q * Math.sin(theta);
+    }
+
+    async function A6(P, Q, theta) 
+    {
+        return P + (Q * Math.cos(theta));
+    }
+
+    const P = parseFloat(prompt("Enter the value of P: "));
+    const Q = parseFloat(prompt("Enter the value of Q: "));
+    const alphaPeeler = new AlphaPeeler(P, Q, Math.PI / 3);
+    alphaPeeler.run();	
+</script>
+
+<div id="001"></div>
+<div id="002"></div>
+<div id="003"></div>
+    
+</body>
+</html>
